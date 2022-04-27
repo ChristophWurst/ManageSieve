@@ -22,12 +22,12 @@
     },
     "autoload": {
         "psr-0": {
-            "Horde_ManageSieve": "lib/"
+            "Horde\\": "lib/"
         }
     },
     "autoload-dev": {
         "psr-0": {
-            "Horde_ManageSieve": "test/"
+            "Horde\\": "test/"
         }
     },
     "minimum-stability": "dev",
