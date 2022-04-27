@@ -24,7 +24,7 @@ use \Horde\ManageSieve, \Horde\ManageSieve\Exception;
  * @copyright 2009-2017 Horde LLC
  * @license   http://www.horde.org/licenses/bsd BSD
  */
-class ManageSieveTest extends Horde_Test_Case
+class ManageSieveTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * The ManageSieve client.
@@ -47,18 +47,16 @@ class ManageSieveTest extends Horde_Test_Case
      */
     protected $scripts;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->config = self::getConfig('MANAGESIEVE_TEST_CONFIG');
+        $this->config = null;
         if (!$this->config || empty($this->config['managesieve'])) {
             $this->markTestSkipped('No ManageSieve configuration');
-            return;
         }
         $this->config = $this->config['managesieve'];
 
         // Create a new instance of Horde\ManageSieve.
         $this->fixture = new ManageSieve();
-        $logger = new Horde_Log_Logger(new Horde_Log_Handler_Cli());
         //$this->fixture->setLogger($logger);
         $this->scripts = array(
             'test script1' => "require \"fileinto\";\r\nif header :contains \"From\" \"@cnba.uba.ar\" \r\n{fileinto \"INBOX.Test1\";}\r\nelse \r\n{fileinto \"INBOX\";}",
@@ -66,13 +64,13 @@ class ManageSieveTest extends Horde_Test_Case
             'test"scriptäöü3' => "require \"vacation\";\nvacation\n:days 7\n:addresses [\"matthew@de-construct.com\"]\n:subject \"This is a test\"\n\"I'm on my holiday!\nsadfafs\";",
             'test script4' => file_get_contents(dirname(__FILE__) . '/largescript.siv'));
     }
-    
-    protected function tearDown()
+
+    protected function tearDown(): void
     {
         // Delete the instance.
         unset($this->fixture);
     }
-    
+
     protected function login()
     {
         $this->fixture->connect($this->config['host'], $this->config['port']);
@@ -123,7 +121,7 @@ class ManageSieveTest extends Horde_Test_Case
     {
         $this->fixture->connect($this->config['host'], $this->config['port']);
     }
-    
+
     public function testLogin()
     {
         $this->fixture->connect($this->config['host'], $this->config['port']);
